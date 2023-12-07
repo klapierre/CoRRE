@@ -2,12 +2,13 @@
 setwd('C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\converge_diverge\\datasets\\longform') #kim's laptop
 setwd('C:\\Users\\komatsuk\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData') #kim's desktop
 
-setwd('C:\\Users\\mavolio2\\Dropbox\\converge_diverge\\datasets\\LongForm')
-setwd("~/Dropbox/converge_diverge/datasets/LongForm")
+setwd('C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CompiledData')
 
+
+library(tidyverse)
 
 library(ggmap)
-library(tidyverse)
+
 library(maps)
 library(mapdata)
 library(mapproj)
@@ -58,4 +59,37 @@ ggplot() +
   scale_color_continuous(name="Mean Annual\nPrecipitatoin") +
   labs(x=NULL, y=NULL)
 #export at 2000x1000
+
+##code from drougth net
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggspatial)
+library(paletteer)
+library(gridExtra)
+
+# Load world map 
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+
+# Map sites in each continent
+map <- ggplot() + 
+  geom_sf(data = world, fill = "antiquewhite") + 
+  #geom_sf(data = oz_states, colour = "black", fill = NA) + 
+  geom_point(data = loc, mapping = aes(x = long, y = lat),
+             pch = 21, 
+             color = "black", 
+             size = 2, 
+             fill='black') + 
+  scale_fill_paletteer_d(`"dutchmasters::milkmaid"`) +
+  geom_jitter(position = "jitter") +
+  theme_bw(base_size = 16) +
+  labs(x = "Latitude", y = "Longitude") + 
+  annotation_north_arrow(location = "bl", which_north = "true", 
+                         pad_x = unit(0.25, "in"), pad_y = unit(0.5, "in"),
+                         style = north_arrow_fancy_orienteering) + 
+  theme(panel.grid.major = element_blank(), 
+        panel.background = element_rect(fill = "aliceblue")) + 
+  coord_sf(ylim = c(-80, 80), expand = FALSE)#+
+#ggtitle('IDE Sites (n = 83)')
+map
 
