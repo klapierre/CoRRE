@@ -3,12 +3,16 @@
 ################
 #setwd("~/Dropbox/CoRRE_database")
 #setwd("C:/Users/K_WILCOX/OneDrive - UNCG/Working groups/sDiv/CoRRE data")
+#setwd("C:/Users/mavolio2/Dropbox/Konza Research/")
+
 library(tidyverse)
 
 file <- "https://pasta.lternet.edu/package/data/eml/knb-lter-knz/72/13/2798ee2d63b042202cdb97fa25fe3a30"
 df_raw <- read.csv(file, header = TRUE)
-sp_list_raw <- read.csv("Data/OriginalData/Sites/knz/sp_list.csv")
-#sp_list_raw <- read.csv("sp_list.csv") #krw local copy
+
+spfile<-"https://pasta.lternet.edu/package/data/eml/knb-lter-knz/134/3/4abeadee64638e46bd5088f2fa7d832e"
+sp_list_raw<-read.csv(spfile, header=T)
+
 sp_list <- sp_list_raw %>%
   dplyr::select(code, genus, species) %>%
   rename("Spcode"="code")
@@ -24,6 +28,11 @@ df_raw$Cover[df_raw$Cover == 4] <- 37.5
 df_raw$Cover[df_raw$Cover == 5] <- 62.5
 df_raw$Cover[df_raw$Cover == 6] <- 85
 df_raw$Cover[df_raw$Cover == 7] <- 97.5
+
+#changing species codes to reflect new species list
+df_raw$Spcode[df_raw$Spcode==188]<-201 #silphium integ. was listed 2x
+df_raw$Spcode[df_raw$Spcode==249]<-186 #this is now melilotus off.
+df_raw$Spcode[df_raw$Spcode==251]<-16 # this is now dicanthilium ovale 
 
 ### Create tables and vectors for community designation and for removal of B. bladhii invaded plots
 upland_plot_vec <- c(10:15, 27:31)
@@ -72,14 +81,17 @@ with(filter(df, calendar_year==1995 & plot_id == 3),
      table(genus_species, treatment))
 with(filter(df, treatment == "c"),
      table(genus_species, calendar_year))
-missing_species_names <- filter(df, genus_species==". .")
-unique(missing_species_names$Spcode)
+# missing_species_names <- filter(df, genus_species==". .")
+# unique(missing_species_names$Spcode)
 
 ## There are three species numbers that have no names within the most updated (May 2023) sp_list from Konza
 ## species numbers are 188, 249, 251. 188 is found in Plot 7, 249 in plot 4, 251 is found in plot 10-13,15,26-28
 ## I have emailed Yang and Jeff about this (May 23, 2023) -- will update when I hear back
 
-#write.csv(df, "Data/CleanedData/Sites/Species csv/KNZ_IRG.csv", row.names = FALSE)
+##Meghan is doing the follow up on this 12/13/23
+#188 is now 201, 249 is now 186, and 251 is now 16
+
+#write.csv(df, "C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data/CleanedData/Sites/Species csv/KNZ_IRG.csv", row.names = FALSE)
 
 # file1 <- "https://pasta.lternet.edu/package/data/eml/knb-lter-knz/72/13/d7d500227665f76533332ebade88deeb"
 # df1 <- read.csv(file1, header = TRUE)
