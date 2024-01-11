@@ -10,7 +10,7 @@
 #### ANPP ####
 #############
 
-file <- "https://foster.ku.edu/sites/foster.ku.edu/files/files/E2%20Plant%20Biomass%206%2016.csv"
+file <- "https://doi.org/10.6073/pasta/24b1cd78375164d3aa346f720aa0db26"
 
 df <- read.csv(file, header = TRUE)
 
@@ -66,7 +66,7 @@ names(E2.anpp)[c(1,3,4,9)] <- c("calendar_year", "plot_id", "block", "anpp")
 library(tidyr)
 
 #online location
-file1 <- "https://foster.ku.edu/sites/foster.ku.edu/files/files/E2%20Plant%20Species%20Composition%206%2016.csv"
+file1 <- "https://doi.org/10.6073/pasta/24b1cd78375164d3aa346f720aa0db26"
 # read in file
 df1 <- read.csv(file1, header= TRUE)
 
