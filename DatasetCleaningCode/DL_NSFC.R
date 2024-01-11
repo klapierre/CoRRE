@@ -3,7 +3,7 @@
 ################
 library(tidyverse)
 
-setwd("~/Dropbox/CoRRE_database")
+setwd('C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\')
 setwd('C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\')
 
 ### biomass data from 2004-2012
@@ -17,6 +17,8 @@ df1 <- read.csv("Data\\OriginalData\\Sites\\DL_NSFC\\Duolun_species biomass 08-1
   mutate(genus_species=paste(genus, species), sep=' ')%>%
   rename(treatment2=treatment)%>%
   mutate(treatment=ifelse(treatment2=='CK', 'C', ifelse(treatment2=='N10', 'N', ifelse(treatment2=='WCK', 'W', 'WN'))))%>%
+  rename(plot_id2=plot_id) %>% 
+  mutate(plot_id=paste(plot_id2, treatment, sep="_")) %>% 
   mutate(site_code='DL', project_name='NSFC', community_type=0)%>%
   mutate(treatment_year=calendar_year-2007)%>%
   select(site_code, project_name, community_type, plot_id, treatment, calendar_year, treatment_year, genus_species, abundance)
