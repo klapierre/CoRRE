@@ -69,11 +69,11 @@ clonal2<-merge(clonal, clonal_names, by="species_code", all=T)%>%
          genus_species!="unknown Polygonaceae")
 
 exp1<-read.delim("ASGA_Exp1.txt")%>%
-  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -n, -burn, -clip, -precip, -p, -dist, -patchiness, -plant_mani, -plot_id1, -plot_mani,   -species_num)%>%
+  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -community_type, -num_manipulations, -experiment_year, -n, -burn, -clip, -precip, -p, -dist, -patchiness, -plant_mani, -plot_id1, -plot_mani,   -species_num)%>%
   gather(species_code, abundance, sp1:sp220)
 exp1_names<-read.delim("ASGA_Exp1_specieslist.txt")
 exp12<-merge(exp1, exp1_names, by="species_code", all=T)%>%
-  filter(abundance!=0)%>% mutate(version = 1.0) %>%
+  filter(abundance!=0)%>% mutate(version = 1.0, community_type=0) %>%
   select(-species_code)
 
 eelplot <- read.csv("AZI_EELplot.csv")%>%
@@ -91,7 +91,8 @@ lind_names<-read.delim("BAY_LIND_specieslist.txt")%>%
   mutate(species_code=tolower(species_code))
 lind2<-merge(lind, lind_names, by="species_code", all=T)%>%
   filter(abundance!=0)%>%
-  select(-species_code)
+  select(-species_code) %>% 
+  filter(treatment=='ref_rich8'|treatment=='rain_rich8')
 
 events<-read.delim("Bt_EVENT2.txt")%>%
   select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -clip,-precip_vari, -precip_vari_season, -true_plot_mani, -plot_id1, -plot_mani,   -species_num)%>%
@@ -356,10 +357,8 @@ change<-read.csv("KNZ_SGS_change.csv")%>%
   filter(abundance !=0)%>%
   filter(!(genus_species %in% c("Unknown forb", "unknown forb", "Unknown fungi")))
 
-irg<-read.delim("KNZ_IRG.txt")%>%
-  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -precip,  -plot_mani, -species_num)%>%
-  gather(species_code, abundance, sp1:sp220)%>%
-  mutate(block=0, version = 1.0)
+irg<-read.csv("KNZ_IRG.csv")%>%
+  mutate(version = 1.0)
 irg_names<-read.delim("KNZ_IRG_specieslist.txt")
 irg2<-merge(irg, irg_names, by="species_code", all=T)%>%
   filter(abundance!=0)%>%
@@ -394,7 +393,10 @@ e2 <- read.csv("KUFS_E2.csv") %>%
   filter(abundance !=0)
 
 e6<-read.csv("KUFS_E6.csv")%>%
-  filter(abundance!=0) %>% mutate(version=ifelse(calendar_year<=2013, 1.0,2.0))
+  filter(abundance!=0) %>% 
+  mutate(version=ifelse(calendar_year<=2013, 1.0,2.0)) %>% 
+  select(-community_type) %>% 
+  mutate(community_type=0)
 
 
 clip<-read.delim("LATNJA_CLIP.txt")%>%
@@ -438,7 +440,12 @@ wet<-read.delim("NANT_wet.txt")%>%
 wet_names<-read.delim("NANT_wet_specieslist.txt")
 wet2<-merge(wet, wet_names, by="species_code", all=T)%>%
   filter(abundance!=0)%>%
-  select(-species_code)
+  select(-species_code) %>% 
+  rename(plot_id2=plot_id) %>% 
+  mutate(plot_id=paste(community_type, plot_id2, sep="_")) %>% 
+  separate(community_type, into=c('site', 'type', 'com'), sep="_", remove = F) %>% 
+  select(-community_type, -site, -type, -plot_id2) %>% 
+  rename(community_type=com)
 
 gb<-read.delim("NGBER_gb.txt")%>%
   select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -precip_vari_season,   -plot_mani, -species_num)%>%
@@ -474,6 +481,7 @@ Nprecip <- read.csv('Naiman_Nprecip.csv')%>%
   select(-fertilization, -water, -Total.g.m2)
 
 nutnet <- read.csv("NutNet.csv")%>%
+  filter(site_code!='Bt') %>% 
   mutate(version = 2.0, community_type = 0) %>% 
   filter(genus_species!="Bryophyte",
          genus_species!="Bryophyte ",
@@ -501,11 +509,11 @@ atwe<-read.csv("NWT_ATWE.csv")%>%
   mutate(version=2.0, block=0, data_type='cover')
 
 bowman<-read.delim("NWT_bowman.txt")%>%
-  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -n, -p,   -plot_mani, -species_num)%>%
+  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -n, -p,   -plot_mani, -species_num, -block)%>%
   gather(species_code, abundance, sp1:sp232)
 bowman_names<-read.delim("NWT_bowman_specieslist.txt")
 bowman2<-merge(bowman, bowman_names, by="species_code", all=T)%>%
-  filter(abundance!=0)%>% mutate(version = 1.0) %>%
+  filter(abundance!=0)%>% mutate(version = 1.0, block=0) %>%
   select(-species_code)
 
 snow<-read.csv("NWT_snow.csv")%>%
