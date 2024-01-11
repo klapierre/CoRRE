@@ -1,4 +1,4 @@
-setwd("~/Dropbox/CoRRE_database/Data/CleanedData/Sites/ANPP csv")
+setwd("C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CleanedData\\Sites\\ANPP csv")
 setwd('C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CleanedData\\Sites\\ANPP csv') #kim's laptop
 
 library(gtools)
@@ -186,4 +186,18 @@ anpp <- rbind(atwe, bgp, biocon, bowman, btdrought, btnpkd, change, clonal, cxn,
 
 # write.csv(anpp, 'C:/Users/lapie/Dropbox (Smithsonian)/working groups/CoRRE/CoRRE_database/Data/CompiledData/ANPP2021.csv', row.names=F)
 
+ggplot(data=anpp, aes(x=anpp))+
+  geom_histogram()
 
+ggplot(data=anpp, aes(x=anpp))+
+  geom_histogram()+
+  facet_wrap(~site_code, scales='free')
+
+knz<-anpp %>% 
+  filter(project_name=='BGP')
+
+cdr<-anpp %>% 
+  filter(site_code=='CDR')
+
+ornl<-anpp %>% 
+  filter(site_code=='ORNL')
