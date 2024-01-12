@@ -248,7 +248,8 @@ warmnut2<-merge(warmnut, warmnut_names, by="species_code", all=T)%>%
 
 gfert <- read.csv("Glen_Fert.csv") %>%
   mutate(community_type = 0, version = 2.0)%>%
-  filter(!(genus_species %in% c("Bare Ground", "Dead Calluna", "lichen", "Liverwort", "Lycopodium sp. (clubmos)", "Rock", "Tiny moss")))
+  filter(!(genus_species %in% c("Bare Ground", "Dead Calluna", "lichen", "Liverwort", "Lycopodium sp. (clubmos)", "Rock", "Tiny moss"))) %>% 
+  filter(calendar_year<2016)
 
 
 face<-read.delim("GVN_FACE.txt")%>%
@@ -358,11 +359,8 @@ change<-read.csv("KNZ_SGS_change.csv")%>%
   filter(!(genus_species %in% c("Unknown forb", "unknown forb", "Unknown fungi")))
 
 irg<-read.csv("KNZ_IRG.csv")%>%
-  mutate(version = 1.0)
-irg_names<-read.delim("KNZ_IRG_specieslist.txt")
-irg2<-merge(irg, irg_names, by="species_code", all=T)%>%
-  filter(abundance!=0)%>%
-  select(-species_code)
+  mutate(version = 1.0) %>% 
+  filter(calendar_year<2017)
 
 pplots<-read.csv("KNZ_pplots.csv")%>%
   mutate(site_code="KNZ", project_name="pplots", data_type="cover", community_type=0, block = 0, version=ifelse(calendar_year<=2015, 1.0,2.0))%>%
@@ -497,7 +495,8 @@ nutnet <- read.csv("NutNet.csv")%>%
          genus_species!="Unknown sp.")
 
 nfert<-read.delim("NWT_246NFert.txt")%>%
-  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -n, -plot_mani, -species_num, -plot_id1)%>%
+  select(-id, -nutrients, -light, -carbon, -water, -other_manipulation, -num_manipulations, -experiment_year, -n, -plot_mani, -species_num, -plot_id)%>%
+  rename(plot_id=plot_id1) %>% 
   gather(species_code, abundance, sp1:sp232)%>%
   mutate(community_type=0, version = 1.0)
 nfert_names<-read.delim("NWT_246NFert_specieslist.txt")
@@ -660,6 +659,10 @@ lovegrass <- read.csv("TRA_Lovegrass.csv") %>%
 edge <- read.csv("USA_EDGE.csv") %>% ## Added new data 2020
   mutate(data_type = "cover", version = 1.0)%>%
   filter(abundance !=0, site_code != "SEV")
+
+test<-edge %>% 
+  group_by(site_code, calendar_year, plot_id, genus_species) %>% 
+  summarise(n=length(abundance))
 
 vcrnutnet <- read.csv('VCR_NutNet.csv')%>%
   mutate(community_type = 0, version = 2.0, data_type='cover')%>%
