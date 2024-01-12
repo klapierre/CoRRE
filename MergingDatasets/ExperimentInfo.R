@@ -848,6 +848,7 @@ warmnut<-read.delim("Finse_WarmNut.txt")%>%
 
 gfert<- read.csv("Glen_Fert.csv")%>%
   select(site_code, project_name, calendar_year, treatment_year, treatment)%>%
+  filter(calendar_year<2016) %>% 
   mutate(community_type=0, 
          nutrients=1, light=0, carbon=0, water=0, other_manipulation=0, 
          n=ifelse(treatment %in% c("N", "NP"), 7.5, 0), 
@@ -1298,8 +1299,9 @@ change<-read.csv("KNZ_SGS_change.csv")%>%
   mutate(trt_type=ifelse(treatment==0, 'control', 'N'))%>%
   unique()
 
-irg<-read.delim("KNZ_IRG.txt")%>%
+irg<-read.csv("KNZ_IRG.csv")%>%
   select(site_code, project_name, community_type, calendar_year, treatment_year, treatment)%>%
+  filter(calendar_year<2017) %>% 
   mutate(nutrients=0, light=0, carbon=0, water=1, other_manipulation=0,
          n=0, 
          p=0, 
