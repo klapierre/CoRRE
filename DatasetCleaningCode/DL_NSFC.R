@@ -23,21 +23,20 @@ df1 <- read.csv("Data\\OriginalData\\Sites\\DL_NSFC\\Duolun_species biomass 08-1
   mutate(treatment_year=calendar_year-2007)%>%
   select(site_code, project_name, community_type, plot_id, treatment, calendar_year, treatment_year, genus_species, abundance)
 
-# ### biomass data from 2013-2016
-# df2 <- read.csv("Data\\OriginalData\\Sites\\DL_NSFC\\DL species biomass-3-16.csv")%>%
-#   rename(calendar_year=ï..calendar_year)%>%
-#   select(calendar_year:Cynanchum_thesioides)%>%
-#   filter(!(is.na(calendar_year)))%>%
-#   mutate(site_code='DL', project_name='NSFC', community_type=0, treatment_year=(calendar_year-2004))%>%
-#   rename(treatment2=treatment)%>%
-#   mutate(treatment=ifelse(treatment2=='CK', 'C', ifelse(treatment2=='N10', 'N', ifelse(treatment2=='WCK', 'W', 'WN'))))%>%
-#   gather(genus_species, abundance, Stipa_krylovii:Cynanchum_thesioides)%>%
-#   filter(abundance>0)%>%
-#   select(site_code, project_name, community_type, plot_id, treatment, calendar_year, treatment_year, genus_species, abundance)%>%
-#   separate(genus_species, into=c("genus", "species"), sep='_', remove=F)%>%
-#   select(-genus_species)%>%
-#   mutate(genus_species=paste(genus, species, sep=' '))%>%
-#   select(site_code, project_name, community_type, plot_id, treatment, calendar_year, treatment_year, genus_species, abundance)
+### biomass data from 2013-2016
+df2 <- read.csv("Data\\OriginalData\\Sites\\DL_NSFC\\DL species biomass-3-16.csv")%>%
+  select(calendar_year:Cynanchum_thesioides)%>%
+  filter(!(is.na(calendar_year)))%>%
+  mutate(site_code='DL', project_name='NSFC', community_type=0, treatment_year=(calendar_year-2004))%>%
+  rename(treatment2=treatment)%>%
+  mutate(treatment=ifelse(treatment2=='CK', 'C', ifelse(treatment2=='N10', 'N', ifelse(treatment2=='WCK', 'W', 'WN'))))%>%
+  gather(genus_species, abundance, Stipa_krylovii:Cynanchum_thesioides)%>%
+  filter(abundance>0)%>%
+  select(site_code, project_name, community_type, plot_id, treatment, calendar_year, treatment_year, genus_species, abundance)%>%
+  separate(genus_species, into=c("genus", "species"), sep='_', remove=F)%>%
+  select(-genus_species)%>%
+  mutate(genus_species=paste(genus, species, sep=' '))%>%
+  select(site_code, project_name, community_type, plot_id, treatment, calendar_year, treatment_year, genus_species, abundance)
 
 
 ### combine data
