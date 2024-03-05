@@ -91,7 +91,7 @@ df2 <- merge(df1, trtdf, by = "plot_id", all.x = TRUE)
 df2 <- df2[df2$mowed == "u",]
 df2$treatment <- paste(df2$burned, df2$mowed, df2$nutrient, sep = "_")
 
-bgp.species <- df2[,c(1,4:8,19,23)]
+bgp.species <- df2[,c(1,4:8,18,19,23)]
 
 bgp.species2<-bgp.species %>% 
   filter(calendar_year<2017) %>% 
@@ -99,5 +99,5 @@ bgp.species2<-bgp.species %>%
   filter(drop!=1) %>% 
   select(-drop)
 
-#write.csv(bgp.species, "C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CleanedData\\Sites\\Species csv\\KNZ_BGP.csv", row.names = FALSE)
+#write.csv(bgp.species2, "C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CleanedData\\Sites\\Species csv\\KNZ_BGP.csv", row.names = FALSE)
 
