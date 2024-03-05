@@ -1,5 +1,4 @@
-setwd("C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CleanedData\\Sites\\Species csv") #kim's laptop
-setwd('C:\\Users\\komatsuk\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CleanedData\\Sites\\Species csv') #kim's desktop
+setwd("C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CleanedData\\Sites\\Species csv") #kim's laptop
 setwd('C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CleanedData\\Sites\\Species csv') #meghans's desktop
 
 
@@ -1244,7 +1243,7 @@ bgpYears <- data.frame(site_code='KNZ', project_name='BGP', calendar_year=1986:2
 bgp<-read.csv("KNZ_BGP.csv")%>%
   select(site_code, project_name, treatment)%>%
   unique()%>%
-  left_join(bgpYears)%>%
+  left_join(bgpYears, multiple='all')%>%
   mutate(community_type=0, 
          nutrients=1, light=0, carbon=0, water=0, other_manipulation=1,
          n=ifelse(treatment %in% c('u_u_p','u_u_c','u_m_p','u_m_c','b_u_p','b_u_c','b_m_p','b_m_c'), 0, 10),
@@ -1485,9 +1484,9 @@ e2 <- read.csv("KUFS_E2.csv")%>%
                                                             ifelse(treatment == 'N0S1H1', 'plant_mani*mow_clip', 'mult_nutrient*plant_mani*mow_clip'))))))))%>%
   unique()
 
-test<-e2 %>% 
-  select(-calendar_year, -treatment_year) %>% 
-  unique()
+# test<-e2 %>% 
+#   select(-calendar_year, -treatment_year) %>% 
+#   unique()
   
 e6<-read.csv("KUFS_E6.csv")%>%
   select(site_code, project_name, community_type, calendar_year, treatment_year, treatment)%>%
@@ -2664,32 +2663,32 @@ sedge <- read.csv('SEV_EDGE20.csv')%>%
   mutate(trt_type=ifelse(treatment=='C', 'control', ifelse(treatment=='D', 'precip_vari', 'drought')))%>%
   unique()
 
-vcrnutnet <- read.csv('VCR_NutNet.csv')%>%
-  select(site_code, project_name, calendar_year, treatment_year, treatment)%>%
-  mutate(community_type=0, nutrients=1, light=0, carbon=0, water=0, other_manipulation=0,
-         n=ifelse(treatment %in% c('N', 'NP'), 10, 0), 
-         p=ifelse(treatment %in% c('P', 'NP'), 10, 0), 
-         k=0, 
-         CO2=0, 
-         precip=0, 
-         temp=0,
-         mow_clip=0, 
-         burn=0, 
-         herb_removal=0,
-         management=0,
-         other_trt=0, 
-         trt_details=0,
-         successional=0, 
-         plant_mani=0, 
-         plant_trt=0,
-         pulse=0)%>%
-  mutate(plot_mani=ifelse(treatment=='C', 0, ifelse(treatment=='NP', 2, 1)))%>%
-  mutate(resource_mani=1)%>%
-  mutate(max_trt=1)%>%
-  mutate(public=0)%>%
-  mutate(factorial=1)%>%
-  mutate(trt_type=ifelse(treatment=='C', 'control', ifelse(treatment=='N', 'N', ifelse(treatment=='P', 'P', 'N*P'))))%>%
-  unique()
+# vcrnutnet <- read.csv('VCR_NutNet.csv')%>%
+#   select(site_code, project_name, calendar_year, treatment_year, treatment)%>%
+#   mutate(community_type=0, nutrients=1, light=0, carbon=0, water=0, other_manipulation=0,
+#          n=ifelse(treatment %in% c('N', 'NP'), 10, 0), 
+#          p=ifelse(treatment %in% c('P', 'NP'), 10, 0), 
+#          k=0, 
+#          CO2=0, 
+#          precip=0, 
+#          temp=0,
+#          mow_clip=0, 
+#          burn=0, 
+#          herb_removal=0,
+#          management=0,
+#          other_trt=0, 
+#          trt_details=0,
+#          successional=0, 
+#          plant_mani=0, 
+#          plant_trt=0,
+#          pulse=0)%>%
+#   mutate(plot_mani=ifelse(treatment=='C', 0, ifelse(treatment=='NP', 2, 1)))%>%
+#   mutate(resource_mani=1)%>%
+#   mutate(max_trt=1)%>%
+#   mutate(public=0)%>%
+#   mutate(factorial=1)%>%
+#   mutate(trt_type=ifelse(treatment=='C', 'control', ifelse(treatment=='N', 'N', ifelse(treatment=='P', 'P', 'N*P'))))%>%
+#   unique()
 
 nitadd<-read.csv("YMN_NitAdd.csv")%>%
   select(site_code, project_name, calendar_year, treatment_year, treatment)%>%
@@ -2721,16 +2720,16 @@ nitadd<-read.csv("YMN_NitAdd.csv")%>%
 
 
 ###merge all datasets
-combine<-rbind(atwe, bffert, bgp, biocon, bowman, bt_drought, ccd, change, clip, clonal, culardoch, cxn, e001, e002, e2, e6, edge, eelplot, events, exp1, face, fert1, fert3, fireplots, gane, gap2, gb, gce, gcme, gcme2, gfert, gfp, grazeprecip, herbdiv, herbwood, hprecip, imagine, interaction, irg, kgfert, lind, lovegrass, lucero, mat2, megarich, mnt, mwatfer, nde, nfert, nitadd, nitphos,  nitrogen, npkd, Nprecip, Nmow, nsfc, nut, nutnet, oface, pennings, phace, pme, precip, pplots, pq, ramps, rhps, rmapc, sedge, snfert, snow, sirg, sdrought, study119, study278, t7, ter, tface,tide,tmece,ton, uk, vcrnutnet, wapaclip, warmnit, warmnut, water, watering, wenndex, wet, yu)
+combine<-rbind(atwe, bffert, bgp, biocon, bowman, bt_drought, ccd, change, clip, clonal, culardoch, cxn, e001, e002, e2, e6, edge, eelplot, events, exp1, face, fert1, fert3, fireplots, gane, gap2, gb, gce, gcme, gcme2, gfert, gfp, grazeprecip, herbdiv, herbwood, hprecip, imagine, interaction, irg, kgfert, lind, lovegrass, lucero, mat2, megarich, mnt, mwatfer, nde, nfert, nitadd, nitphos,  nitrogen, npkd, Nprecip, Nmow, nsfc, nut, nutnet, oface, pennings, phace, pme, precip, pplots, pq, ramps, rhps, rmapc, sedge, snfert, snow, sirg, sdrought, study119, study278, t7, ter, tface,tide,tmece,ton, uk, wapaclip, warmnit, warmnut, water, watering, wenndex, wet, yu)
 
-# write.csv(combine, "C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CompiledData\\ExperimentInfo.csv", row.names = FALSE)
+# write.csv(combine, "C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\ExperimentInfo_March2024.csv", row.names = FALSE)
 
 
 temp_df <- unique(combine[,c(1,2,6,33)])
 trt_sum <- as.data.frame(table(temp_df$trt_type))
 trt_sum <- trt_sum[order(trt_sum$Freq, decreasing = TRUE),]
 names(trt_sum) <- c("treatment_type", "Number_of_experiments")
-# write.csv(trt_sum, "C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\treatment_type_summary.csv", row.names=F)
+# write.csv(trt_sum, "C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\treatment_type_summary.csv", row.names=F)
 
 # Creating a summary of treatment types by location - all treatment types
 df <- unique(combine[,c(1,2,29,33)])
@@ -2738,7 +2737,7 @@ temp <- df %>% count(trt_type, site_code)
 temp1<- temp[,c(1,2)] %>% count(trt_type)
 names(temp1) <- c("treatment_type","Number_of_locations")
 test <- merge(trt_sum, temp1)
-# write.csv(test, "C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\treatment_type_summary_location.csv", row.names=F)
+# write.csv(test, "C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\treatment_type_summary_location.csv", row.names=F)
 
 # Larger grouping of treatment types
 # CO2, N, P, Drought, Irr, Var
@@ -2781,5 +2780,5 @@ trt_sum2 <- as.data.frame(table(df2$trt_type))
 names(trt_sum2) <- c("treatment_type", "Number_of_experiments")
 trt_sum3 <- merge(trt_sum2, temp1)
 #trt_sum3 <- trt_sum3[trt_sum3$treatment_type != "control",]
-# write.csv(trt_sum3, "C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\treatment_type_summary_broad_groups.csv", row.names=F)
+# write.csv(trt_sum3, "C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\treatment_type_summary_broad_groups.csv", row.names=F)
 
