@@ -1,5 +1,8 @@
 setwd("~/Dropbox/CoRRE_database")
 
+setwd('C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database') #kim's laptop
+
+
 
 library(tidyverse)
 

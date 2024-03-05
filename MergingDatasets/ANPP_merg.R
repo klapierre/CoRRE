@@ -1,5 +1,5 @@
 setwd("C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CleanedData\\Sites\\ANPP csv")
-setwd('C:\\Users\\lapie\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CleanedData\\Sites\\ANPP csv') #kim's laptop
+setwd('C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CleanedData\\Sites\\ANPP csv') #kim's laptop
 
 library(gtools)
 library(tidyverse)
@@ -184,7 +184,7 @@ anpp <- rbind(atwe, bgp, biocon, bowman, btdrought, btnpkd, change, clonal, cxn,
               nutnet, oface, phace, pme, pplots, ramps, rhps, rio, rmapc, 
               snfert, snow, t7, tide, tmece, ton, uk, wapaclip, water, watering, wenndex, wet, vcrnutnet)
 
-# write.csv(anpp, 'C:/Users/lapie/Dropbox (Smithsonian)/working groups/CoRRE/CoRRE_database/Data/CompiledData/ANPP2021.csv', row.names=F)
+# write.csv(anpp, 'C:/Users/kjkomatsu/Dropbox (Smithsonian)/working groups/CoRRE/CoRRE_database/Data/CompiledData/ANPP2021.csv', row.names=F)
 
 ggplot(data=anpp, aes(x=anpp))+
   geom_histogram()
@@ -201,3 +201,7 @@ cdr<-anpp %>%
 
 ornl<-anpp %>% 
   filter(site_code=='ORNL')
+
+
+ggplot(data=NDE, aes(x=anpp))+
+  geom_histogram()
