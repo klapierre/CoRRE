@@ -196,6 +196,7 @@ clonal<-read.delim("ASGA_Clonal.txt")%>%
 
 exp1<-read.delim("ASGA_Exp1.txt")%>%
   select(site_code, project_name, calendar_year, treatment_year, treatment, community_type)%>%
+  mutate(community_type=0) %>% 
   mutate(nutrients=1, light=0, carbon=0, water=0, other_manipulation=1,
          n=ifelse(treatment=='2_0_CO'|treatment=='1_0_CO'|treatment=='2_1_CO'|treatment=='1_1_CO', 0, 20.1),
          p=0, 
@@ -1490,6 +1491,7 @@ e2 <- read.csv("KUFS_E2.csv")%>%
   
 e6<-read.csv("KUFS_E6.csv")%>%
   select(site_code, project_name, community_type, calendar_year, treatment_year, treatment)%>%
+  mutate(community_type=0) %>% 
   mutate(nutrients=1, light=0, carbon=0, water=0, other_manipulation=1,
          n=ifelse(treatment %in% c('N0P0S0','N0P8S0', "N0P8S1", "N0P0S1"), 0, 
                   ifelse(treatment %in% c('N4P0S0','N4P8S0', 'N4P0S1','N4P8S1'), 4, 
@@ -1549,7 +1551,7 @@ clip<-read.delim("LATNJA_CLIP.txt")%>%
   mutate(public=0)%>%
   mutate(factorial=1)%>%
   mutate(trt_type=ifelse(treatment=='CONTROL', 'control', ifelse(treatment=='N', 'N*P', ifelse(treatment=='T', 'temp', 'N*P*temp'))))%>%
-  unique()
+  unique() 
 
 pme<-read.csv("LEFT_PME.csv")%>%
   select(site_code, project_name, calendar_year, treatment_year, treatment)%>%
@@ -1715,7 +1717,10 @@ wet<-read.delim("NANT_wet.txt")%>%
   mutate(public=0)%>%
   mutate(factorial=1)%>%
   mutate(trt_type=ifelse(treatment=='0N0P', 'control', ifelse(treatment=='0N1P', 'P', ifelse(treatment=='1N0P', 'N', 'N*P'))))%>%
-  unique()
+  unique() %>% 
+  separate(community_type, into=c('site', 'type', 'com'), sep="_", remove = F) %>% 
+  select(-community_type, -site, -type) %>% 
+  rename(community_type=com)
 
 gb<-read.delim("NGBER_gb.txt")%>%
   select(site_code, project_name, calendar_year, treatment_year, treatment)%>%
@@ -2723,6 +2728,8 @@ nitadd<-read.csv("YMN_NitAdd.csv")%>%
 combine<-rbind(atwe, bffert, bgp, biocon, bowman, bt_drought, ccd, change, clip, clonal, culardoch, cxn, e001, e002, e2, e6, edge, eelplot, events, exp1, face, fert1, fert3, fireplots, gane, gap2, gb, gce, gcme, gcme2, gfert, gfp, grazeprecip, herbdiv, herbwood, hprecip, imagine, interaction, irg, kgfert, lind, lovegrass, lucero, mat2, megarich, mnt, mwatfer, nde, nfert, nitadd, nitphos,  nitrogen, npkd, Nprecip, Nmow, nsfc, nut, nutnet, oface, pennings, phace, pme, precip, pplots, pq, ramps, rhps, rmapc, sedge, snfert, snow, sirg, sdrought, study119, study278, t7, ter, tface,tide,tmece,ton, uk, wapaclip, warmnit, warmnut, water, watering, wenndex, wet, yu)
 
 # write.csv(combine, "C:\\Users\\kjkomatsu\\Dropbox (Smithsonian)\\working groups\\CoRRE\\CoRRE_database\\Data\\CompiledData\\ExperimentInfo_March2024.csv", row.names = FALSE)
+
+# write.csv(combine, "C:\\Users\\mavolio2\\Dropbox\\CoRRE_database\\Data\\CompiledData\\ExperimentInfo_March2024.csv", row.names = FALSE)
 
 
 temp_df <- unique(combine[,c(1,2,6,33)])
